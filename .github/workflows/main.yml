@@ -35,9 +35,11 @@ jobs:
       - name: Push to Docker Hub
         run: docker push fatmagamal/devopstask:latest
 
-      # Step 6: Apply namespace and nodejs deployment
-      - name: Apply namespace and nodejs deployment
-        run: |
-          kubectl apply -f namespace.yaml
-          kubectl apply -f nodejs-deployment.yaml
+      # Step 4: Apply the deployment file to the development namespace
+      - name: Apply deployment file
+        run: kubectl apply -f nodejs-deployment.yaml --namespace development
+      
+      # Step 5: Apply the service file to the development namespace
+      - name: Apply service file
+        run: kubectl apply -f nodejs-service.yaml --namespace development
 
