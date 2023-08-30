@@ -1,0 +1,36 @@
+name: Node.js Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          docker run --rm -v $PWD:/app -w /app node:18 npm install
+
+      - name: Run unit tests
+        run: |
+          docker run --rm -v $PWD:/app -w /app node:18 npm run test
+
+      - name: Build application
+        run: |
+          docker run --rm -v $PWD:/app -w /app node:18 npm run build
+
+      - name: Build Dockerfile
+        run: docker build . -t fatmagamal/devopstask:latest
+
+      - name: Log in to Docker Hub
+        run: |
+          docker login -u fatmagamal -p ${{ secrets.DOCKERHUB_CREDENTIALS }}
+
+      - name: Push to Docker Hub
+        run: docker push fatmagamal/devopstask:latest
