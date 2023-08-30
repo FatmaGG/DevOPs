@@ -17,4 +17,4 @@ spec:
       - name: nodejs-app
         image: serverlab/simple-api:1.0.0 # change this to your image name and tag
         ports:
-        - containerPort: 3000 # change this to the port your app listens on
+        - containerPort: 8080 # change this to the port your app listens on
